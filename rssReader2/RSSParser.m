@@ -26,13 +26,13 @@
         self.categoryURL = string;
     }
     rssURL = [[NSURL alloc]initWithString:self.categoryURL];
-
     parser = [[NSXMLParser alloc] initWithContentsOfURL:rssURL];
     [parser setDelegate:self];
     [parser parse];
 
     return self;
 }
+//this was part of my failed attempt to control the RSS feed according to the Category view selection.
 
 -(void) reloadParser:(NSString *)category{
     if ([category isEqualToString:@"TopStories"]){
@@ -50,7 +50,7 @@
 -(void)parser:(NSXMLParser *) parser didStartElement:(NSString *)elementName
  namespaceURI: (NSString *) namespaceURI qualifiedName: (NSString *) qName attributes: (NSDictionary *) attributeDict{
     self.currentElement = elementName;
-
+    errorParsing = NO;
     
     
     if ([self.currentElement isEqualToString:@"title"])
@@ -91,7 +91,11 @@
     if (!self.articles){
         self.articles = [[NSMutableArray alloc]init];
     }
-    if ([self.currentElement isEqualToString:@"enclosure"]){
+    //Here I settled for a workaround hack rather than a clean solution. The problem I was facing is that I was only able to read the 'enclosure' value in this delegate and not the 'found characters' delegate. I tried to place all the object attribute definers in one place but I couldn't get it right.
+    
+    //the other dirty hack is nullifying the relevant instance variables in the last if statement, I'm sure theres a better way I could have done this.
+    
+   else if ([self.currentElement isEqualToString:@"enclosure"]){
         article.enclosure = self.currentEnclosure;
       
         [self.articles addObject:article];
@@ -115,7 +119,7 @@
     }
     if (!self.currentElement)
         return;
-    
+   
     if ([self.currentElement isEqualToString:@"title"])
     {
         NSArray *newString = [string componentsSeparatedByString:@" | "];
@@ -135,7 +139,8 @@
         
     }else if ([self.currentElement isEqualToString:@"pubDate"])
     {
-        article.pubDate = string;
+        NSString *substr = [string substringWithRange:NSMakeRange(5,11)];
+        article.pubDate = substr;
 
     }
     else if ([self.currentElement isEqualToString:@"enclosure"]){
@@ -146,6 +151,26 @@
     }
    
    
+}
+
+//error handlers
+- (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
+   
+    NSString *errorString = [NSString stringWithFormat:@"Error code %i", [parseError code]];
+    NSLog(@"Error parsing XML: %@", errorString);
+     errorParsing = YES;
+}
+
+
+- (void)parserDidEndDocument:(NSXMLParser *)parser {
+    
+    if (errorParsing == NO)
+        {
+NSLog(@"XML processing done!");
+} else {
+NSLog(@"Error occurred during XML processing");
+}
+    
 }
 
 

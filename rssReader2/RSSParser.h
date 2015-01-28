@@ -17,6 +17,7 @@
     NSXMLParser *parser;
     Article *article;
     NSMutableArray *articles;
+    BOOL errorParsing;
 }
 
 -(RSSParser *) initRSSParser;

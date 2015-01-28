@@ -10,6 +10,7 @@
 #import "CatTableViewCell.h"
 #import "RSSParser.h"
 #import "ArticlesTVC.h"
+#import "ViewController.h"
 
 @interface CatBarTVC ()
 
@@ -27,9 +28,7 @@
     [_tableView setDataSource:self];
     [_tableView setDelegate:self];
     
-  // tableView.transform = CGAffineTransformMakeRotation(-M_PI * 0.5);
     _tableView.autoresizesSubviews=NO;
-    //self.tableView.bounces=NO;
     _tableView.separatorColor = [UIColor greenColor];
      self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
 
@@ -70,13 +69,6 @@
     
     cell.nameLabel.text = [categories objectAtIndex:indexPath.row];
     
-   //cell.bounds = CGRectMake(cell.bounds.origin.x, cell.bounds.origin.y, cell.bounds.size.width, cell.bounds.size.height+50);
-
-    /*CGRectMake(cell.bounds.origin.x,
-                             self.bounds.origin.y,
-                             self.bounds.size.width-150,
-                             self.bounds.size.height);
-    */
 
     return cell;
     
@@ -87,14 +79,14 @@
     return 70;
 }
 
-- (void) tableView: (UITableView *) tableView didSelectRowAtIndexPath: (NSIndexPath *) indexPath
+/*
+- (void)tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath
 {
-  
-
-
+    //ArticlesTVC *a = [[ArticlesTVC class] performSelector:@selector(viewDidLoad)];
 }
 
-/*
+
+
 // Override to support conditional editing of the table view.
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
     // Return NO if you do not want the specified item to be editable.

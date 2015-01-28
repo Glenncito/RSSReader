@@ -11,6 +11,7 @@
 #import "ArticlesTableViewCell.h"
 
 
+
 @interface ArticlesTVC ()
 
 @end
@@ -37,19 +38,18 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
+
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-   // NSLog (@"%i",parser.items.count);
+
     return articleList.count;
 }
 
@@ -66,6 +66,8 @@
     NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[[articleList valueForKey:@"enclosure"] objectAtIndex:indexPath.row]]];
     cell.enclosure.image = [UIImage imageWithData:data];
     
+    [cell.dateLabel setText:[[articleList valueForKey:@"pubDate"] objectAtIndex:indexPath.row]];
+    
     [cell.headingTextView setText:[[articleList valueForKey:@"title"] objectAtIndex:indexPath.row]];
     cell.headingTextView.editable = NO;
    
@@ -80,6 +82,7 @@
     
     return 70;
 }
+
 
 /*
 // Override to support conditional editing of the table view.

@@ -14,6 +14,6 @@
 }
 @property (nonatomic, strong) UIImageView *enclosure;
 @property (nonatomic, strong)  UITextView *headingTextView;
-@property (nonatomic, strong) UILabel *date;
+@property (nonatomic, strong) UILabel *dateLabel;
 
 @end

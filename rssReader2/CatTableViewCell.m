@@ -40,24 +40,11 @@
         float cellHeight = 80.0;
         
         frame.origin.x = (self.superview.frame.size.width - cellWidth)/2;
-        //frame.origin.y = (self.superview.frame.size.height -50);
-        
-       frame.size.width = cellWidth;
-       //frame.size.height = cellHeight;
+        frame.size.width = cellWidth;
+
     }
     [super setFrame:frame];
 }
-
-/*
--(void)layoutSubviews
-{
-    self.textLabel.frame = CGRectMake(0, self.textLabel.frame.origin.y, self.frame.size.width, self.textLabel.frame.size.height);
-    self.detailTextLabel.frame = CGRectMake(0, self.detailTextLabel.frame.origin.y, self.frame.size.width, self.detailTextLabel.frame.size.height);
-    [super layoutSubviews];
-
-
-}*/
-
 
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -69,7 +56,6 @@
         self.nameLabel.textColor = [UIColor whiteColor];
         self.nameLabel.font = [UIFont fontWithName:@"Arial" size:10.0f];
         self.transform = CGAffineTransformMakeRotation(M_PI * 0.5);
-//self.autoresizesSubviews=NO;
         
         [self addSubview:self.nameLabel];
     }

@@ -24,25 +24,14 @@
     
     UIView *categoryView = [[UIView alloc] init];
     [categoryView setFrame:CGRectMake(60,0, 100,-200)];
-   // [categoryView setBackgroundColor: [ UIColor redColor]];
-    
-    /* UIView *marker= [[UIView alloc] init];
-     marker setFrame:CGRectMake (0,205,400,5)];
-     [marker setBackgroundColor:[UIColor blueColor]];
-     */
     
     UIView *articlesView = [[UIView alloc] init];
     [articlesView setFrame:CGRectMake(0,50, 400,400)];
-   // [articlesView setBackgroundColor: [ UIColor redColor]];
-    
-   
     
     CatBarTVC *categoryBar = [[CatBarTVC alloc] initWithStyle:UITableViewStylePlain];
     categoryBar.view.transform = CGAffineTransformMakeRotation(-M_PI * 0.5);
     categoryBar.view.autoresizesSubviews=NO;
    
-    
-    
     
     ArticlesTVC *articles = [[ArticlesTVC alloc] initWithStyle:UITableViewStylePlain];
     [articlesView addSubview:articles.view];
@@ -57,12 +46,12 @@
     
     categoryBar.view.frame =CGRectMake(0,0, 500,70);
     articles.view.frame =CGRectMake(0,50, 400,400);
-    
- //   NSNotification *notification = [NSNotification notificationWithName:@"newDataFetched" object:categoryBar];
-   // [[NSNotificationCenter defaultCenter] postNotification:notification];
 
 }
 
++(void) action{
+    NSLog (@"action recieved");
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
