@@ -11,11 +11,7 @@
 
 @implementation ArticlesTableViewCell
 
-@synthesize headingTextView , enclosure
-;
-- (void)awakeFromNib {
-    // Initialization code
-}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
@@ -40,10 +36,10 @@
         self.headingTextView.textColor = [UIColor blackColor];
         self.headingTextView.font = [UIFont fontWithName:@"Arial" size:10.0f];
         
- 
+ [self addSubview:self.dateLabel];
         [self addSubview:self.enclosure];
         [self addSubview:self.headingTextView];
-        [self addSubview:self.dateLabel];
+        
         
         //Here the Date only appears in the first cell, but when I scroll down and up again it re-appears
             }

@@ -86,10 +86,10 @@
     
     //Fetch the category that was tapped
     NSString *categoryString = [categories objectAtIndex:indexPath.row];
-    
     //Post a global notification that can be picked up by any other view in our app. Normally we store the string constants (ie. "kNotificationKey_categorySelected") in a globally accessible file but we'll get to that at a later stage.
     //This line basically "broadcasts" a message saying a category was selected, and it sends the category string with the message
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kNotificationKey_categorySelected" object:categoryString];
+   // [[NSNotificationCenter defaultCenter] postNotificationName:@"kNotificationKey_restartArticles" object:nil];
 }
 
 /*

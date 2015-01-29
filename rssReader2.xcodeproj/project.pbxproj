@@ -12,6 +12,7 @@
 		243380641A6C1D960030CAAF /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 243380631A6C1D960030CAAF /* Images.xcassets */; };
 		243380671A6C1D960030CAAF /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 243380651A6C1D960030CAAF /* LaunchScreen.xib */; };
 		243380731A6C1D960030CAAF /* rssReader2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 243380721A6C1D960030CAAF /* rssReader2Tests.m */; };
+		243559A91A7AEDB00099F7C7 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 243559A81A7AEDB00099F7C7 /* DetailViewController.m */; };
 		243A4D851A758637003A43E3 /* RSSParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 243A4D841A758637003A43E3 /* RSSParser.m */; };
 		24A2E48A1A7645CB007A0F18 /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 24A2E4891A7645CB007A0F18 /* Article.m */; };
 		24A2E48D1A764BA0007A0F18 /* ArticlesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 24A2E48C1A764BA0007A0F18 /* ArticlesTableViewCell.m */; };
@@ -42,6 +43,8 @@
 		2433806C1A6C1D960030CAAF /* rssReader2Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = rssReader2Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		243380711A6C1D960030CAAF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		243380721A6C1D960030CAAF /* rssReader2Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = rssReader2Tests.m; sourceTree = "<group>"; };
+		243559A71A7AEDB00099F7C7 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		243559A81A7AEDB00099F7C7 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		243A4D831A758637003A43E3 /* RSSParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser.h; sourceTree = "<group>"; };
 		243A4D841A758637003A43E3 /* RSSParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser.m; sourceTree = "<group>"; };
 		24A2E4881A7645CB007A0F18 /* Article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Article.h; sourceTree = "<group>"; };
@@ -100,6 +103,8 @@
 				243380611A6C1D960030CAAF /* AppDelegate.m */,
 				24EBD8801A6FED5800E80D74 /* ViewController.h */,
 				24EBD8811A6FED5800E80D74 /* ViewController.m */,
+				243559A71A7AEDB00099F7C7 /* DetailViewController.h */,
+				243559A81A7AEDB00099F7C7 /* DetailViewController.m */,
 				243A4D831A758637003A43E3 /* RSSParser.h */,
 				243A4D841A758637003A43E3 /* RSSParser.m */,
 				24A2E4881A7645CB007A0F18 /* Article.h */,
@@ -250,6 +255,7 @@
 				24A2E48D1A764BA0007A0F18 /* ArticlesTableViewCell.m in Sources */,
 				24EBD8791A6FD38D00E80D74 /* ArticlesTVC.m in Sources */,
 				24EBD87C1A6FE4E100E80D74 /* CatTableViewCell.m in Sources */,
+				243559A91A7AEDB00099F7C7 /* DetailViewController.m in Sources */,
 				243A4D851A758637003A43E3 /* RSSParser.m in Sources */,
 				243380621A6C1D960030CAAF /* AppDelegate.m in Sources */,
 				2433805F1A6C1D960030CAAF /* main.m in Sources */,

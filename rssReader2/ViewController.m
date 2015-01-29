@@ -10,6 +10,7 @@
 #import "CatBarTVC.h"
 #import "ArticlesTVC.h"
 #import "RSSParser.h"
+#import "DetailViewController.h"
 
 @interface ViewController ()
 
@@ -34,9 +35,11 @@
    
     
     ArticlesTVC *articles = [[ArticlesTVC alloc] initWithStyle:UITableViewStylePlain];
-    [articlesView addSubview:articles.view];
-    [self addChildViewController:articles];
     
+    [articlesView addSubview:articles.view];
+    //[self addChildViewController:articles];
+    
+    //[articlesView addSubview:articles.view];
     
     [self.view addSubview:categoryBar.view];
     [self.view addSubview:articles.view];
@@ -46,17 +49,19 @@
     
     categoryBar.view.frame =CGRectMake(0,0, 500,70);
     articles.view.frame =CGRectMake(0,50, 400,400);
+    
+    
+
 
 }
 
-+(void) action{
-    NSLog (@"action recieved");
-}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 /*
 #pragma mark - Navigation

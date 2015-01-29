@@ -9,6 +9,7 @@
 #import "ArticlesTVC.h"
 #import "RSSParser.h"
 #import "ArticlesTableViewCell.h"
+#import "article.h"
 
 
 
@@ -17,7 +18,10 @@
 @end
 
 @implementation ArticlesTVC
-@synthesize tableView;
+
+
+
+#define kBgQueue dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -28,18 +32,26 @@
     [self.myTableView setDelegate:self];
     
     
-    parser = [[RSSParser alloc] initRSSParser];
+    parser = [RSSParser sharedRSSParser];
     
     NSLog (@"items: %lu",(unsigned long)parser.articles.count);
     
     self.articleList = [[NSMutableArray alloc]initWithArray:parser.articles];
+ //  [self performSelectorOnMainThread:@selector(updateTable) withObject:nil waitUntilDone:NO];
     
     //NICK: Here we register to listen out for our "category selected" notifcation broadcast and tell our class what method to fire if we receive it
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(categorySelected:) name:@"kNotificationKey_categorySelected" object:nil];
     
     //NICK: Here we register for our parser to let us know when it is done so we can reload the tableview
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(parsingComplete) name:@"kNotificationKey_XMLProcessingDone" object:nil];
-    
+   
+}
+
+-(void) viewWillAppear:(BOOL)animated{
+    dispatch_async(kBgQueue, ^{
+        [self.myTableView reloadData];
+    });
+
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,19 +63,46 @@
 
 //NICK: Method that gets fired when a category is received
 - (void) categorySelected:(NSNotification *)notification {
-    
-    //Get our category string out of our notification object
+       //Get our category string out of our notification object
     NSString *categoryString = notification.object;
     
     //Reload the parser using your method
     [parser reloadParser:categoryString];
+ 
+    
+    
+    
 }
+
+
+
 
 //NICK: Method that gets fired when parsing is complete
 - (void) parsingComplete {
     //Tell the tableview to animate the changes automatically
-    self.articleList = [[NSMutableArray alloc]initWithArray:parser.articles];
-    [self.myTableView reloadData];  // reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
+    self.myTableView = [[UITableView alloc] initWithFrame: CGRectMake(0,1,400,150)
+                                                    style:UITableViewStylePlain];
+   // [self.myTableView setDataSource:self];
+ //   [self.myTableView setDelegate:self];
+    
+        self.articleList = [[NSMutableArray alloc]initWithArray:parser.articles];
+  
+        [self.myTableView reloadData];
+    
+    
+    
+    
+   // [self.myTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
+   
+ //   self.myTableView = nil;
+ /*   self.myTableView = [[UITableView alloc] initWithFrame: CGRectMake(0,1,400,150)
+                                                    style:UITableViewStylePlain];
+    [self.myTableView setDataSource:self];
+    [self.myTableView setDelegate:self];
+*/
+ // [self.myTableView reloadData];  // reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
+    
 }
 
 #pragma mark - Table view data source
@@ -80,21 +119,44 @@
 
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    NSString *CellIdentifier = @"Cell";
+  
+  static  NSString *CellIdentifier = @"Cell";
     ArticlesTableViewCell *cell = (ArticlesTableViewCell *)[self.myTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+   
+     cell = [[ArticlesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+  
+
+    dispatch_async(kBgQueue, ^{
+      //  NSLog (@"value: %@", [[self.articleList valueForKey:@"enclosure"] objectAtIndex:indexPath.row]);
+        NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[[self.articleList valueForKey:@"enclosure"] objectAtIndex:indexPath.row]]];
+
+               if (imgData) {
+            UIImage *image = [UIImage imageWithData:imgData];
+            if (image) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                        cell.enclosure.image = image;
+                });
+            }
+        }
+    });
     
-    if (!cell) {
-        cell = [[ArticlesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-    }
-    //NICK: Removed the offending line of code. Replace with code from example given
-    //    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:[[articleList valueForKey:@"enclosure"] objectAtIndex:indexPath.row]]];
-    //    cell.enclosure.image = [UIImage imageWithData:data];
+ /*   dispatch_async(dispatch_get_main_queue(), ^{
+       [cell.dateLabel setText:[[self.articleList valueForKey:@"pubDate"] objectAtIndex:indexPath.row]];
+        
+        [cell.headingTextView setText:[[self.articleList valueForKey:@"title"] objectAtIndex:indexPath.row]];
+        //NSLog(@"title is: %@", [[self.articleList valueForKey:@"title"] objectAtIndex:indexPath.row]);
+  
+        [cell setNeedsLayout];
+    });*/
     
-    [cell.dateLabel setText:[[self.articleList valueForKey:@"pubDate"] objectAtIndex:indexPath.row]];
-    
-    [cell.headingTextView setText:[[self.articleList valueForKey:@"title"] objectAtIndex:indexPath.row]];
-    cell.headingTextView.editable = NO;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        [cell.dateLabel performSelectorOnMainThread:@selector(setText:) withObject:[[self.articleList valueForKey:@"pubDate"] objectAtIndex:indexPath.row] waitUntilDone:NO modes:@[NSRunLoopCommonModes]];
+        [cell.headingTextView performSelectorOnMainThread:@selector(setText:) withObject:[[self.articleList valueForKey:@"title"] objectAtIndex:indexPath.row] waitUntilDone:NO modes:@[NSRunLoopCommonModes]];
+         cell.headingTextView.editable = NO;
+          });
+
+
     
     
     //
@@ -108,6 +170,12 @@
     return 70;
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+  
+    NSObject *articleObject = [self.articleList objectAtIndex:indexPath.row];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"kNotificationKey_articleSelected" object:articleObject];
+    
+}
 
 /*
  // Override to support conditional editing of the table view.

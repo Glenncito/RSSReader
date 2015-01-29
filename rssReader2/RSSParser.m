@@ -17,7 +17,34 @@
 
 @synthesize articles;
 
+//singleton class
++(RSSParser *) sharedRSSParser{
+    static RSSParser *sharedRSSParser = nil;
+    static dispatch_once_t onceToken;
+    
+    dispatch_once(&onceToken, ^{
+        sharedRSSParser = [[self alloc] init];
+    });
+    return sharedRSSParser;
+}
 
+- (id)init {
+    if (self = [super init]) {
+        self.articles = [[NSMutableArray alloc]init];
+        
+        if (!self.categoryURL){
+            NSString *string = @"http://feeds.news24.com/articles/news24/TopStories/rss";
+            self.categoryURL = string;
+        }
+        rssURL = [[NSURL alloc]initWithString:self.categoryURL];
+        parser = [[NSXMLParser alloc] initWithContentsOfURL:rssURL];
+        [parser setDelegate:self];
+        [parser parse];
+
+    }
+    return self;
+}
+/*
 - (RSSParser *) initRSSParser {
     
     //NICK: Init your array here rather
@@ -33,15 +60,18 @@
     [parser parse];
     
     return self;
-}
+}*/
+
 //this was part of my failed attempt to control the RSS feed according to the Category view selection.
 
 -(void) reloadParser:(NSString *)category{
     //NICK: Some of your strings did not match the cateogoy strings exactly - this meant when I passed the string to this method it did pick up which URL to use.
+   NSString *categoryURL;
+    
     if ([category isEqualToString:@"Top Stories"]){
         self.categoryURL = @"http://feeds.news24.com/articles/news24/TopStories/rss";
     }else if ([category isEqualToString:@"South Africa"]){
-        self.categoryURL = @"http://feeds.news24.com/articles/news24/SouthAfrica/rss";
+    self.categoryURL = @"http://feeds.news24.com/articles/news24/SouthAfrica/rss";
     }else if ([category isEqualToString:@"World"]){
         self.categoryURL = @"http://feeds.news24.com/articles/news24/World/rss";
     }else if ([category isEqualToString:@"Sport"]){
@@ -51,7 +81,7 @@
     }
     
     //NICK: Re-init array for the changes
-    self.articles = [[NSMutableArray alloc]init];
+    articles = [[NSMutableArray alloc]init];
     
     //NICK: You forgot to tell the parser to reload the data :)
     rssURL = [[NSURL alloc]initWithString:self.categoryURL];

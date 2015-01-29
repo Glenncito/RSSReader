@@ -19,6 +19,7 @@
     NSMutableArray *articles;
     BOOL errorParsing;
 }
++ (RSSParser *)sharedRSSParser;
 
 -(RSSParser *) initRSSParser;
 @property (nonatomic, strong) NSString *categoryURL;
@@ -32,7 +33,8 @@
 @property (nonatomic, retain) NSMutableArray *articles;
 
 //NICK: Make the method "public" ie. accessible from outside classes
--(void) reloadParser:(NSString *)category;
+//GLENN: So do you mean turning it into a class method?
+- (void) reloadParser:(NSString *)category;
 
 
 @end

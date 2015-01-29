@@ -15,6 +15,7 @@
 }
 
 @property (strong, nonatomic) UIViewController *UIVC;
+
 +(void)action;
 
 @end
