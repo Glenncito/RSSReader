@@ -1,0 +1,8 @@
+.DS_Store
+*.xcworkspace
+*.xcuserdatad
+*.xcuserstate
+build-*/
+.build/*
+build/*
+*.bridgesupport
