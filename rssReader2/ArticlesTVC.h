@@ -10,12 +10,10 @@
 #import "RSSParser.h"
 
 @interface ArticlesTVC: UITableViewController{
-    UITableView *tableView;
-    NSMutableArray *articleList;
     RSSParser *parser;
 }
 
-@property (nonatomic, retain) UITableView *tableView;
-@property (nonatomic, retain)  NSMutableArray *articleList;
+@property (nonatomic, strong) UITableView *myTableView;
+@property (nonatomic, strong)  NSMutableArray *articleList;
 
 @end
