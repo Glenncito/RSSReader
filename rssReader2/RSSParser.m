@@ -19,8 +19,10 @@
 
 
 - (RSSParser *) initRSSParser {
-   
-
+    
+    //NICK: Init your array here rather
+    self.articles = [[NSMutableArray alloc]init];
+    
     if (!self.categoryURL){
         NSString *string = @"http://feeds.news24.com/articles/news24/TopStories/rss";
         self.categoryURL = string;
@@ -29,22 +31,33 @@
     parser = [[NSXMLParser alloc] initWithContentsOfURL:rssURL];
     [parser setDelegate:self];
     [parser parse];
-
+    
     return self;
 }
 //this was part of my failed attempt to control the RSS feed according to the Category view selection.
 
 -(void) reloadParser:(NSString *)category{
-    if ([category isEqualToString:@"TopStories"]){
+    //NICK: Some of your strings did not match the cateogoy strings exactly - this meant when I passed the string to this method it did pick up which URL to use.
+    if ([category isEqualToString:@"Top Stories"]){
         self.categoryURL = @"http://feeds.news24.com/articles/news24/TopStories/rss";
-    }else if ([category isEqualToString:@"SouthAfrica"]){
+    }else if ([category isEqualToString:@"South Africa"]){
         self.categoryURL = @"http://feeds.news24.com/articles/news24/SouthAfrica/rss";
     }else if ([category isEqualToString:@"World"]){
         self.categoryURL = @"http://feeds.news24.com/articles/news24/World/rss";
-    }else if ([category isEqualToString:@"news"]){
-        self.categoryURL = @"http://feeds.news24.com/articles/news24/news/rss";
+    }else if ([category isEqualToString:@"Sport"]){
+        self.categoryURL = @"http://feeds.24.com/articles/sport/featured/topstories/rss";
+    }else if ([category isEqualToString:@"Business"]){
+        self.categoryURL = @"http://feeds.news24.com/articles/fin24/news/rss";
     }
-        
+    
+    //NICK: Re-init array for the changes
+    self.articles = [[NSMutableArray alloc]init];
+    
+    //NICK: You forgot to tell the parser to reload the data :)
+    rssURL = [[NSURL alloc]initWithString:self.categoryURL];
+    parser = [[NSXMLParser alloc] initWithContentsOfURL:rssURL];
+    [parser setDelegate:self];
+    [parser parse];
 }
 
 -(void)parser:(NSXMLParser *) parser didStartElement:(NSString *)elementName
@@ -56,19 +69,19 @@
     if ([self.currentElement isEqualToString:@"title"])
     {
         self.currentTitle = [NSMutableString string];
-    
+        
     }
     
     else if ([self.currentElement isEqualToString:@"description"]){
         
         self.currentDescription = [NSMutableString string];
-
+        
     }
     else if ([self.currentElement isEqualToString:@"link"]){
-
         
-            self.currentLink = [NSMutableString string];
- 
+        
+        self.currentLink = [NSMutableString string];
+        
         
     }else if ([self.currentElement isEqualToString:@"pubDate"]){
         
@@ -76,11 +89,11 @@
         
     }
     else if ([self.currentElement isEqualToString:@"enclosure"]){
-      
+        
         self.currentEnclosure = [NSMutableString string];
         NSMutableString *string = attributeDict [@"url"];
         self.currentEnclosure = string;
-
+        
     }
 }
 
@@ -88,16 +101,17 @@
 
 -(void)parser:(NSXMLParser *)parser didEndElement:(NSString *)elementName namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qName
 {
-    if (!self.articles){
-        self.articles = [[NSMutableArray alloc]init];
-    }
+    //NICK: I removed the array init from this method. The array should be initialised at the beginning of the process and not during the process
+    
     //Here I settled for a workaround hack rather than a clean solution. The problem I was facing is that I was only able to read the 'enclosure' value in this delegate and not the 'found characters' delegate. I tried to place all the object attribute definers in one place but I couldn't get it right.
     
     //the other dirty hack is nullifying the relevant instance variables in the last if statement, I'm sure theres a better way I could have done this.
     
-   else if ([self.currentElement isEqualToString:@"enclosure"]){
+    //NICK: we can chat about this when we meet
+    
+    if ([self.currentElement isEqualToString:@"enclosure"]){
         article.enclosure = self.currentEnclosure;
-      
+        
         [self.articles addObject:article];
         
         self.currentTitle = nil;
@@ -119,12 +133,12 @@
     }
     if (!self.currentElement)
         return;
-   
+    
     if ([self.currentElement isEqualToString:@"title"])
     {
         NSArray *newString = [string componentsSeparatedByString:@" | "];
         if (newString.count >1){
-        string = newString[1];
+            string = newString[1];
         }
         article.title = string;
         
@@ -141,7 +155,7 @@
     {
         NSString *substr = [string substringWithRange:NSMakeRange(5,11)];
         article.pubDate = substr;
-
+        
     }
     else if ([self.currentElement isEqualToString:@"enclosure"]){
         
@@ -149,27 +163,29 @@
         
         
     }
-   
-   
+    
+    
 }
 
 //error handlers
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
-   
+    
     NSString *errorString = [NSString stringWithFormat:@"Error code %i", [parseError code]];
     NSLog(@"Error parsing XML: %@", errorString);
-     errorParsing = YES;
+    errorParsing = YES;
 }
 
 
 - (void)parserDidEndDocument:(NSXMLParser *)parser {
     
     if (errorParsing == NO)
-        {
-NSLog(@"XML processing done!");
-} else {
-NSLog(@"Error occurred during XML processing");
-}
+    {
+        NSLog(@"XML processing done!");
+        //NICK: Here we will broadcast a message to say that loading is done and our tableview can reload it's data
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"kNotificationKey_XMLProcessingDone" object:nil];
+    } else {
+        NSLog(@"Error occurred during XML processing");
+    }
     
 }
 

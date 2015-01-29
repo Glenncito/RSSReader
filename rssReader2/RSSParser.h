@@ -12,7 +12,7 @@
 
 
 @interface RSSParser : NSObject <NSXMLParserDelegate>{
-
+    
     NSURL *rssURL;
     NSXMLParser *parser;
     Article *article;
@@ -30,6 +30,9 @@
 @property (nonatomic, strong) NSString *currentEnclosure;
 
 @property (nonatomic, retain) NSMutableArray *articles;
+
+//NICK: Make the method "public" ie. accessible from outside classes
+-(void) reloadParser:(NSString *)category;
 
 
 @end
