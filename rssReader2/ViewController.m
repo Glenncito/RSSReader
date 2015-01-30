@@ -76,9 +76,8 @@
 }
 
 -(void) reloadTableView{
-    [_articles.tableView reloadData];
+    [_articles.tableView reloadSections:[NSIndexSet indexSetWithIndex:0]withRowAnimation:UITableViewRowAnimationAutomatic];
 }
-
 /*
 #pragma mark - Navigation
 
