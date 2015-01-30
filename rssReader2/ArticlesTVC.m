@@ -136,10 +136,8 @@
         [cell setNeedsLayout];
     });*/
     
-    NSString *dateString =[[self.articleList valueForKey:@"pubDate"] objectAtIndex:indexPath.row];
-    [cell.dateLabel setText:dateString];
-    [cell.headingTextView setText:[[self.articleList valueForKey:@"title"] objectAtIndex:indexPath.row]];
-         cell.headingTextView.editable = NO;
+    Article *article = (Article *)[self.articleList objectAtIndex:indexPath.row];
+    [cell configureForArticle:article];
 
     [cell setNeedsDisplay];
 

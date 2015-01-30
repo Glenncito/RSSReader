@@ -47,4 +47,11 @@
     
 }
 
+- (void) configureForArticle:(Article *)article {
+    NSString *dateString = article.pubDate;
+    self.dateLabel.text = dateString;
+    self.headingTextView.text = article.title;
+    self.headingTextView.editable = NO;
+}
+
 @end

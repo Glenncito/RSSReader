@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Article.h"
 
 @interface ArticlesTableViewCell : UITableViewCell
 {
@@ -15,5 +16,7 @@
 @property (nonatomic, strong) UIImageView *enclosure;
 @property (nonatomic, strong)  UITextView *headingTextView;
 @property (nonatomic, strong) UILabel *dateLabel;
+
+- (void) configureForArticle:(Article *)article;
 
 @end
