@@ -26,10 +26,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.myTableView = [[UITableView alloc] initWithFrame: CGRectMake(0,1,400,150)
+    myTableView = [[UITableView alloc] initWithFrame: CGRectMake(0,1,400,150)
                                                     style:UITableViewStylePlain];
-    [self.myTableView setDataSource:self];
-    [self.myTableView setDelegate:self];
+    [myTableView setDataSource:self];
+    [myTableView setDelegate:self];
     
     
     parser = [RSSParser sharedRSSParser];
@@ -49,7 +49,7 @@
 
 -(void) viewWillAppear:(BOOL)animated{
     dispatch_async(kBgQueue, ^{
-        [self.myTableView reloadData];
+        [myTableView reloadData];
     });
 
 }
@@ -68,7 +68,10 @@
     
     //Reload the parser using your method
     [parser reloadParser:categoryString];
- 
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [myTableView reloadData];
+    });
+
     
     
     
@@ -77,32 +80,15 @@
 
 
 
-//NICK: Method that gets fired when parsing is complete
+// Method that gets fired when parsing is complete via NSNotification
 - (void) parsingComplete {
     //Tell the tableview to animate the changes automatically
-    
-    self.myTableView = [[UITableView alloc] initWithFrame: CGRectMake(0,1,400,150)
-                                                    style:UITableViewStylePlain];
-   // [self.myTableView setDataSource:self];
- //   [self.myTableView setDelegate:self];
-    
+
         self.articleList = [[NSMutableArray alloc]initWithArray:parser.articles];
   
-        [self.myTableView reloadData];
-    
-    
-    
-    
-   // [self.myTableView performSelectorOnMainThread:@selector(reloadData) withObject:nil waitUntilDone:NO];
-   
- //   self.myTableView = nil;
- /*   self.myTableView = [[UITableView alloc] initWithFrame: CGRectMake(0,1,400,150)
-                                                    style:UITableViewStylePlain];
-    [self.myTableView setDataSource:self];
-    [self.myTableView setDelegate:self];
-*/
- // [self.myTableView reloadData];  // reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationAutomatic];
-    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"kNotificationKey_reloadArticlesTable" object:nil];
+
+
 }
 
 #pragma mark - Table view data source
@@ -121,20 +107,21 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
   
   static  NSString *CellIdentifier = @"Cell";
-    ArticlesTableViewCell *cell = (ArticlesTableViewCell *)[self.myTableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    ArticlesTableViewCell *cell = (ArticlesTableViewCell *)[myTableView dequeueReusableCellWithIdentifier:CellIdentifier];
    
+    if (!cell){
      cell = [[ArticlesTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
-  
+          }
 
     dispatch_async(kBgQueue, ^{
-      //  NSLog (@"value: %@", [[self.articleList valueForKey:@"enclosure"] objectAtIndex:indexPath.row]);
-        NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[[self.articleList valueForKey:@"enclosure"] objectAtIndex:indexPath.row]]];
+          NSData *imgData = [NSData dataWithContentsOfURL:[NSURL URLWithString:[[self.articleList valueForKey:@"enclosure"] objectAtIndex:indexPath.row]]];
 
                if (imgData) {
             UIImage *image = [UIImage imageWithData:imgData];
             if (image) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                         cell.enclosure.image = image;
+                    [cell.enclosure setNeedsDisplay];
                 });
             }
         }
@@ -149,17 +136,13 @@
         [cell setNeedsLayout];
     });*/
     
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        [cell.dateLabel performSelectorOnMainThread:@selector(setText:) withObject:[[self.articleList valueForKey:@"pubDate"] objectAtIndex:indexPath.row] waitUntilDone:NO modes:@[NSRunLoopCommonModes]];
-        [cell.headingTextView performSelectorOnMainThread:@selector(setText:) withObject:[[self.articleList valueForKey:@"title"] objectAtIndex:indexPath.row] waitUntilDone:NO modes:@[NSRunLoopCommonModes]];
+    NSString *dateString =[[self.articleList valueForKey:@"pubDate"] objectAtIndex:indexPath.row];
+    [cell.dateLabel setText:dateString];
+    [cell.headingTextView setText:[[self.articleList valueForKey:@"title"] objectAtIndex:indexPath.row]];
          cell.headingTextView.editable = NO;
-          });
 
+    [cell setNeedsDisplay];
 
-    
-    
-    //
     return cell;
     
 }
@@ -171,7 +154,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  
+  NSLog (@"tapped");
     NSObject *articleObject = [self.articleList objectAtIndex:indexPath.row];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kNotificationKey_articleSelected" object:articleObject];
     

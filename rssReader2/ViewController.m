@@ -20,9 +20,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    UIVC = [[UIViewController alloc]init];
-    
+
+    [self setNeedsStatusBarAppearanceUpdate];
+
     UIView *categoryView = [[UIView alloc] init];
     [categoryView setFrame:CGRectMake(60,0, 100,-200)];
     
@@ -33,26 +33,39 @@
     categoryBar.view.transform = CGAffineTransformMakeRotation(-M_PI * 0.5);
     categoryBar.view.autoresizesSubviews=NO;
    
+    dvc = [[DetailViewController alloc]init];
     
-    ArticlesTVC *articles = [[ArticlesTVC alloc] initWithStyle:UITableViewStylePlain];
+    _articles = [[ArticlesTVC alloc] initWithStyle:UITableViewStylePlain];
     
-    [articlesView addSubview:articles.view];
+    [articlesView addSubview:_articles.view];
     //[self addChildViewController:articles];
     
     //[articlesView addSubview:articles.view];
     
     [self.view addSubview:categoryBar.view];
-    [self.view addSubview:articles.view];
+    [self.view addSubview:_articles.view];
     
     [self addChildViewController:categoryBar];
-    [self addChildViewController:articles];
+    [self addChildViewController:_articles];
     
     categoryBar.view.frame =CGRectMake(0,0, 500,70);
-    articles.view.frame =CGRectMake(0,50, 400,400);
+    _articles.view.frame =CGRectMake(0,50, 400,400);
     
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:@"kNotificationKey_reloadArticlesTable" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToDetailView:) name:@"kNotificationKey_articleSelected" object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:@"kNotificationKey_loadDetailView" object:nil];
 
 
+}
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
+
+- (void)switchToDetailView:(UIViewController *)viewController
+{
+    [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self.view addSubview:dvc.view];
 }
 
 
@@ -62,6 +75,9 @@
     // Dispose of any resources that can be recreated.
 }
 
+-(void) reloadTableView{
+    [_articles.tableView reloadData];
+}
 
 /*
 #pragma mark - Navigation

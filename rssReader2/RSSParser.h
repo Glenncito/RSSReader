@@ -21,7 +21,7 @@
 }
 + (RSSParser *)sharedRSSParser;
 
--(RSSParser *) initRSSParser;
+//-(RSSParser *) initRSSParser;
 @property (nonatomic, strong) NSString *categoryURL;
 @property (nonatomic, strong) NSString *currentElement;
 @property (nonatomic, strong) NSString *currentTitle;

@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DetailViewController : UIViewController{
-           
+@interface DetailViewController : UIViewController<UINavigationBarDelegate>{
+    UIImageView *enclosure;
+    NSObject *story;
 }
 
 @property (strong, nonatomic) UIViewController *detailVC;
-@property (strong, nonatomic) NSObject *story;
+//@property (strong, nonatomic) NSObject *story;
 
 @property (nonatomic, strong) UIImageView *enclosure;
 @property (nonatomic, strong)  UITextView *headingTextView;

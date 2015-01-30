@@ -11,10 +11,10 @@
 
 @interface ArticlesTVC: UITableViewController{
     RSSParser *parser;
-    //UITableView *myTableView;
+    UITableView *myTableView;
 }
 
-@property (nonatomic, strong) UITableView *myTableView;
+//@property (nonatomic, strong) UITableView *myTableView;
 @property (nonatomic, strong)  NSMutableArray *articleList;
 //@property (nonatomic, strong) RSSParser *parser;
 -(ArticlesTVC *) initTable;

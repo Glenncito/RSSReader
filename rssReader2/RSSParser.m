@@ -17,17 +17,18 @@
 
 @synthesize articles;
 
-//singleton class
 +(RSSParser *) sharedRSSParser{
     static RSSParser *sharedRSSParser = nil;
     static dispatch_once_t onceToken;
-    
     dispatch_once(&onceToken, ^{
         sharedRSSParser = [[self alloc] init];
     });
+    
+    if (sharedRSSParser==nil){
+        sharedRSSParser = [[self alloc]init];
+    }
     return sharedRSSParser;
 }
-
 - (id)init {
     if (self = [super init]) {
         self.articles = [[NSMutableArray alloc]init];
@@ -86,6 +87,7 @@
     //NICK: You forgot to tell the parser to reload the data :)
     rssURL = [[NSURL alloc]initWithString:self.categoryURL];
     parser = [[NSXMLParser alloc] initWithContentsOfURL:rssURL];
+    
     [parser setDelegate:self];
     [parser parse];
 }

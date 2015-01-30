@@ -11,13 +11,10 @@
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
-
-    NSMutableArray *articles;
     
 }
 
 @property (strong, nonatomic) UIWindow *window;
-@property (nonatomic, retain) NSMutableArray *articles;
 
 
 @end
