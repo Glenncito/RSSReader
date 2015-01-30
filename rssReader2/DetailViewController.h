@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Article.h"
 
 @interface DetailViewController : UIViewController<UINavigationBarDelegate>{
     UIImageView *enclosure;
@@ -19,5 +20,8 @@
 @property (nonatomic, strong) UIImageView *enclosure;
 @property (nonatomic, strong)  UITextView *headingTextView;
 @property (nonatomic, strong) UILabel *dateLabel;
+@property (nonatomic, strong) Article *currentArticle;
+
+- (id) initWithArticle:(Article *)article;
 
 @end

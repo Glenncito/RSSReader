@@ -32,8 +32,6 @@
     CatBarTVC *categoryBar = [[CatBarTVC alloc] initWithStyle:UITableViewStylePlain];
     categoryBar.view.transform = CGAffineTransformMakeRotation(-M_PI * 0.5);
     categoryBar.view.autoresizesSubviews=NO;
-   
-    dvc = [[DetailViewController alloc]init];
     
     _articles = [[ArticlesTVC alloc] initWithStyle:UITableViewStylePlain];
     
@@ -62,10 +60,13 @@
     return YES;
 }
 
-- (void)switchToDetailView:(UIViewController *)viewController
+- (void)switchToDetailView:(NSNotification *)notification
 {
-    [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [self.view addSubview:dvc.view];
+    Article *article = (Article *)notification.object;
+    DetailViewController *detailVC = [[DetailViewController alloc]initWithArticle:article];
+    [self.navigationController pushViewController:detailVC animated:YES];
+//    [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+//    [self.view addSubview:dvc.view];
 }
 
 

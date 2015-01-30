@@ -10,6 +10,7 @@
 #import "RSSParser.h"
 #import "ArticlesTableViewCell.h"
 #import "article.h"
+#import "DetailViewController.h"
 
 
 
@@ -153,9 +154,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
   NSLog (@"tapped");
-    NSObject *articleObject = [self.articleList objectAtIndex:indexPath.row];
+    Article *articleObject = (Article *)[self.articleList objectAtIndex:indexPath.row];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kNotificationKey_articleSelected" object:articleObject];
-    
 }
 
 /*

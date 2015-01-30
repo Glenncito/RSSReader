@@ -36,6 +36,8 @@
         self.headingTextView.textColor = [UIColor blackColor];
         self.headingTextView.font = [UIFont fontWithName:@"Arial" size:10.0f];
         
+        self.exclusiveTouch = NO;
+        
         [self addSubview:self.dateLabel];
         [self addSubview:self.enclosure];
         [self addSubview:self.headingTextView];

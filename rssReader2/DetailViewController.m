@@ -7,13 +7,22 @@
 //
 
 #import "DetailViewController.h"
-#import "Article.h"
 
 @interface DetailViewController ()
 
 @end
 
 @implementation DetailViewController
+
+- (id) initWithArticle:(Article *)article {
+    self = [super init];
+    
+    if(self) {
+        self.currentArticle = article;
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
