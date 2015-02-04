@@ -45,7 +45,11 @@
     pView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
     lView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
 
-    
+    self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    pView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    lView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    self.view.autoresizesSubviews = YES;
+
     [self setNeedsStatusBarAppearanceUpdate];
 
    // NC = [[UINavigationController alloc] initWithRootViewController:self];
@@ -57,7 +61,7 @@
     
     CatBarTVC *categoryBar = [[CatBarTVC alloc] initWithStyle:UITableViewStylePlain];
     categoryBar.view.transform = CGAffineTransformMakeRotation(-M_PI * 0.5);
-    categoryBar.view.autoresizesSubviews=NO;
+    categoryBar.view.autoresizesSubviews=YES;
     
     _articles = [[ArticlesTVC alloc] initWithStyle:UITableViewStylePlain];
     
@@ -66,11 +70,16 @@
     
     //[articlesView addSubview:articles.view];
     
+    [lView addSubview:categoryBar.view];
+    [lView addSubview:_articles.view];
+    
     [pView addSubview:categoryBar.view];
     [pView addSubview:_articles.view];
     
-    [lView addSubview:categoryBar.view];
-    [lView addSubview:_articles.view];
+   
+    
+    pView.autoresizesSubviews = YES;
+    lView.autoresizesSubviews = YES;
     
     [self addChildViewController:categoryBar];
     [self addChildViewController:_articles];
@@ -159,8 +168,7 @@
                 [self clearCurrentView];
                 [self.view insertSubview:pView atIndex:0];
                 
-                //Copy object states between views
-                //SomeTextControlP.text = SomeTextControlL.text;
+                
             }
             orientation = newOrientation;
         }
