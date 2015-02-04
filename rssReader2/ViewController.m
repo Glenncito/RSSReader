@@ -18,21 +18,32 @@
 
 @implementation ViewController
 
+@synthesize pView;
+@synthesize lView;
+
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    isShowingLandscapeView = NO;
+ /*   isShowingLandscapeView = NO;
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
+*/
+    //----- SETUP ORIENTATION -----
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate:) name:@"UIDeviceOrientationDidChangeNotification"  object:nil];
+    orientation = (UIDeviceOrientation)[[UIDevice currentDevice] orientation];
+    if (orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown)
+    {
+        orientation = UIDeviceOrientationPortrait;
+    }
 
 
-
-
-
+    pView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
+    lView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
 
     
     [self setNeedsStatusBarAppearanceUpdate];
@@ -55,8 +66,11 @@
     
     //[articlesView addSubview:articles.view];
     
-    [self.view addSubview:categoryBar.view];
-    [self.view addSubview:_articles.view];
+    [pView addSubview:categoryBar.view];
+    [pView addSubview:_articles.view];
+    
+    [lView addSubview:categoryBar.view];
+    [lView addSubview:_articles.view];
     
     [self addChildViewController:categoryBar];
     [self addChildViewController:_articles];
@@ -73,6 +87,100 @@
 
 }
 
+
+
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+    
+    //----- SETUP ORIENTATION -----
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate:) name:@"UIDeviceOrientationDidChangeNotification"  object:nil];
+    //orientation = [[UIDevice currentDevice] orientation];
+    orientation = (UIDeviceOrientation)[UIApplication sharedApplication].statusBarOrientation;
+    if (orientation == UIDeviceOrientationUnknown || orientation == UIDeviceOrientationFaceUp || orientation == UIDeviceOrientationFaceDown)
+    {
+        orientation = UIDeviceOrientationPortrait;
+    }
+   
+    if ((orientation == UIDeviceOrientationLandscapeLeft || orientation == UIDeviceOrientationLandscapeRight))
+    {
+
+        [self clearCurrentView];
+        [self.view insertSubview:lView atIndex:0];
+    }
+    else if (orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown)
+    {
+        // Clear the current view and insert the orientation specific view.
+        [self clearCurrentView];
+        [self.view insertSubview:pView atIndex:0];
+    }
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
+}
+
+
+-(void)didRotate:(NSNotification *)notification
+{
+    
+    UIDeviceOrientation newOrientation = [[UIDevice currentDevice] orientation];
+    if (newOrientation != UIDeviceOrientationUnknown && newOrientation != UIDeviceOrientationFaceUp && newOrientation != UIDeviceOrientationFaceDown)
+    {
+        if (orientation != newOrientation)
+        {
+            
+            NSLog(@"Changed Orientation");
+            if (
+                ((newOrientation == UIDeviceOrientationLandscapeLeft || newOrientation == UIDeviceOrientationLandscapeRight)) &&
+                ((orientation == UIDeviceOrientationPortrait || orientation == UIDeviceOrientationPortraitUpsideDown))
+                )
+            {
+                NSLog(@"Changed Orientation To Landscape");
+                // Clear the current view and insert the orientation specific view.
+                [self clearCurrentView];
+                [self.view insertSubview:lView atIndex:0];
+                
+                //Copy object states between views
+                //SomeTextControlL.text = SomeTextControlP.text;
+            }
+            else if (
+                     ((newOrientation == UIDeviceOrientationPortrait || newOrientation == UIDeviceOrientationPortraitUpsideDown)) &&
+                     ((orientation == UIDeviceOrientationLandscapeLeft || orientation == UIDeviceOrientationLandscapeRight))
+                     )
+            {
+                NSLog(@"Changed Orientation To Portrait");
+                // Clear the current view and insert the orientation specific view.
+                [self clearCurrentView];
+                [self.view insertSubview:pView atIndex:0];
+                
+                //Copy object states between views
+                //SomeTextControlP.text = SomeTextControlL.text;
+            }
+            orientation = newOrientation;
+        }
+        
+    }
+}
+
+- (void) clearCurrentView
+{
+    if (lView.superview)
+    {
+        [lView removeFromSuperview];
+    }
+    else if (pView.superview)
+    {
+        [pView removeFromSuperview];
+    }
+}
+
+/*
 - (void)orientationChanged:(NSNotification *)notification
 
 {
@@ -98,14 +206,14 @@
 
     }
 
-}
+} */
 
 
 
 
 
 
-
+/*
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
 
 {
@@ -121,7 +229,8 @@
     
     return NO;
 
-}
+}*/
+
 
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -138,15 +247,7 @@
 
 
 
-- (void)viewWillAppear:(BOOL)animated {
-    [self.navigationController setNavigationBarHidden:YES animated:animated];
-    [super viewWillAppear:animated];
-}
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [self.navigationController setNavigationBarHidden:NO animated:animated];
-    [super viewWillDisappear:animated];
-}
 
 - (void)switchToDetailView:(NSNotification *)notification
 {
