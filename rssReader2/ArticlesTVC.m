@@ -153,9 +153,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-  NSLog (@"tapped");
-    Article *articleObject = (Article *)[self.articleList objectAtIndex:indexPath.row];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"kNotificationKey_articleSelected" object:articleObject];
+
+    Article *selectedArticle = (Article *)[self.articleList objectAtIndex:indexPath.row];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"kNotificationKey_articleSelected" object:selectedArticle];
 }
 
 /*

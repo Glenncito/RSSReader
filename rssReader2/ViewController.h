@@ -11,13 +11,25 @@
 #import "DetailViewController.h"
 @interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSXMLParserDelegate>{
    
-    UIViewController *UIVC;
+    
+    
+    UIView *pView;
+    UIView *lView;
+    
+    UIDeviceOrientation orientation;
     UITableView *articles;
     DetailViewController *dvc;
+    UINavigationController *NC;
+    BOOL isShowingLandscapeView;
+
 }
 
-@property (strong, nonatomic) UIViewController *UIVC;
 @property (strong, nonatomic) ArticlesTVC *articles;
+
+@property (nonatomic, retain) UIView *pView;
+@property (nonatomic, retain) UIView *lView;
+
+- (void)clearCurrentView;
 
 +(void)action;
 -(void) reloadTableView;

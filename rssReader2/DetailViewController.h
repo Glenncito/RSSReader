@@ -18,8 +18,11 @@
 //@property (strong, nonatomic) NSObject *story;
 
 @property (nonatomic, strong) UIImageView *enclosure;
-@property (nonatomic, strong)  UITextView *headingTextView;
+@property (nonatomic, strong)  UILabel *headingLabel;
 @property (nonatomic, strong) UILabel *dateLabel;
+@property (nonatomic, strong) UITextView *articleDescription;
+@property (nonatomic, strong) UILabel *link;
+
 @property (nonatomic, strong) Article *currentArticle;
 
 - (id) initWithArticle:(Article *)article;

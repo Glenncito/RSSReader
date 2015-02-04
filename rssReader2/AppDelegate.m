@@ -18,12 +18,16 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+ 
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
   
-    ViewController *vc = [[ViewController alloc]init];
+    self.viewController = [[ViewController alloc]init];
+   //self.viewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+    self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
     
-    self.window.rootViewController = vc;
-    
+    [self.window addSubview:self.navigationController.view];
+
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;

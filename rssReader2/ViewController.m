@@ -21,8 +21,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
+    isShowingLandscapeView = NO;
+    
+    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
+   [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(orientationChanged:)
+                                                 name:UIDeviceOrientationDidChangeNotification
+                                               object:nil];
+
+
+
+
+
+
+    
     [self setNeedsStatusBarAppearanceUpdate];
 
+   // NC = [[UINavigationController alloc] initWithRootViewController:self];
     UIView *categoryView = [[UIView alloc] init];
     [categoryView setFrame:CGRectMake(60,0, 100,-200)];
     
@@ -52,12 +67,85 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:@"kNotificationKey_reloadArticlesTable" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToDetailView:) name:@"kNotificationKey_articleSelected" object:nil];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:@"kNotificationKey_loadDetailView" object:nil];
+  //  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:@"kNotificationKey_loadDetailView" object:nil];
+
 
 
 }
-- (BOOL)prefersStatusBarHidden {
+
+- (void)orientationChanged:(NSNotification *)notification
+
+{
+    
+    UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
+    
+    if (UIDeviceOrientationIsLandscape(deviceOrientation))
+        
+    {
+  // _articles.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
+    //    _articles.view.autoresizesSubviews = YES;
+
+        //[self performSegueWithIdentifier:@"DisplayAlternateView" sender:self];
+        isShowingLandscapeView = YES;
+    }
+    
+    else if (UIDeviceOrientationIsPortrait(deviceOrientation))
+    {
+
+        [self dismissViewControllerAnimated:YES completion:nil];
+        
+        isShowingLandscapeView = NO;
+
+    }
+
+}
+
+
+
+
+
+
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
+
+{
+    
+    if ((orientation == UIInterfaceOrientationPortrait) ||
+        
+        (orientation == UIInterfaceOrientationLandscapeLeft)){
+          NSLog (@"%d", orientation);
+        return YES;
+      
+    }
+    
+    
+    return NO;
+
+}
+
+
+- (NSUInteger)supportedInterfaceOrientations
+
+{
+
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft;
+
+}
+- (BOOL)shouldAutorotate {
+
     return YES;
+}
+
+
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
 }
 
 - (void)switchToDetailView:(NSNotification *)notification
@@ -65,8 +153,7 @@
     Article *article = (Article *)notification.object;
     DetailViewController *detailVC = [[DetailViewController alloc]initWithArticle:article];
     [self.navigationController pushViewController:detailVC animated:YES];
-//    [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-//    [self.view addSubview:dvc.view];
+
 }
 
 
