@@ -32,7 +32,7 @@
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
 */
-    //----- SETUP ORIENTATION -----
+    //setup orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate:) name:@"UIDeviceOrientationDidChangeNotification"  object:nil];
     orientation = (UIDeviceOrientation)[[UIDevice currentDevice] orientation];
@@ -95,7 +95,7 @@
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
     
-    //----- SETUP ORIENTATION -----
+    //setup orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate:) name:@"UIDeviceOrientationDidChangeNotification"  object:nil];
     //orientation = [[UIDevice currentDevice] orientation];
@@ -213,23 +213,7 @@
 
 
 
-/*
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)orientation
 
-{
-    
-    if ((orientation == UIInterfaceOrientationPortrait) ||
-        
-        (orientation == UIInterfaceOrientationLandscapeLeft)){
-          NSLog (@"%d", orientation);
-        return YES;
-      
-    }
-    
-    
-    return NO;
-
-}*/
 
 
 
