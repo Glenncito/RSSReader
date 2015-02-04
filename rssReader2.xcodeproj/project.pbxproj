@@ -20,6 +20,7 @@
 		24EBD8791A6FD38D00E80D74 /* ArticlesTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 24EBD8781A6FD38D00E80D74 /* ArticlesTVC.m */; };
 		24EBD87C1A6FE4E100E80D74 /* CatTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 24EBD87B1A6FE4E100E80D74 /* CatTableViewCell.m */; };
 		24EBD8821A6FED5800E80D74 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24EBD8811A6FED5800E80D74 /* ViewController.m */; };
+		24FED10F1A82522800503C26 /* UINavController.m in Sources */ = {isa = PBXBuildFile; fileRef = 24FED10E1A82522800503C26 /* UINavController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,8 @@
 		24EBD87B1A6FE4E100E80D74 /* CatTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CatTableViewCell.m; sourceTree = "<group>"; };
 		24EBD8801A6FED5800E80D74 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		24EBD8811A6FED5800E80D74 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		24FED10D1A82522800503C26 /* UINavController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UINavController.h; sourceTree = "<group>"; };
+		24FED10E1A82522800503C26 /* UINavController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UINavController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,6 +104,8 @@
 			children = (
 				243380601A6C1D960030CAAF /* AppDelegate.h */,
 				243380611A6C1D960030CAAF /* AppDelegate.m */,
+				24FED10D1A82522800503C26 /* UINavController.h */,
+				24FED10E1A82522800503C26 /* UINavController.m */,
 				24EBD8801A6FED5800E80D74 /* ViewController.h */,
 				24EBD8811A6FED5800E80D74 /* ViewController.m */,
 				243559A71A7AEDB00099F7C7 /* DetailViewController.h */,
@@ -259,6 +264,7 @@
 				243A4D851A758637003A43E3 /* RSSParser.m in Sources */,
 				243380621A6C1D960030CAAF /* AppDelegate.m in Sources */,
 				2433805F1A6C1D960030CAAF /* main.m in Sources */,
+				24FED10F1A82522800503C26 /* UINavController.m in Sources */,
 				24EBD8761A6FD2E300E80D74 /* CatBarTVC.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

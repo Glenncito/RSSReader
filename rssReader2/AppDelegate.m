@@ -24,8 +24,8 @@
   
     self.viewController = [[ViewController alloc]init];
    //self.viewController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    self.navigationController = [[UINavigationController alloc] initWithRootViewController:self.viewController];
-    
+    self.navigationController = [[UINavController alloc] initWithRootViewController:self.viewController];
+    self.navigationController.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [self.window addSubview:self.navigationController.view];
 
     self.window.backgroundColor = [UIColor whiteColor];
@@ -33,7 +33,10 @@
     return YES;
 
 }
-
+-(BOOL) shouldAutorotate
+{
+    return YES;
+}
 
 
 - (void)applicationWillResignActive:(UIApplication *)application {

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ViewController.h"
 //#import "TableViewController.h"
+#import "UINavController.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 {
@@ -17,7 +18,7 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, retain) ViewController *viewController;
-@property (nonatomic, retain) UINavigationController *navigationController;
+@property (nonatomic, retain) UINavController *navigationController;
 
 @end
 

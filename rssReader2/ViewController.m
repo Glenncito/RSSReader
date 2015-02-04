@@ -24,15 +24,15 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
- /*   isShowingLandscapeView = NO;
+    isShowingLandscapeView = NO;
     
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(orientationChanged:)
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
-*/
-    //setup orientation
+
+   /* //setup orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate:) name:@"UIDeviceOrientationDidChangeNotification"  object:nil];
     orientation = (UIDeviceOrientation)[[UIDevice currentDevice] orientation];
@@ -40,7 +40,7 @@
     {
         orientation = UIDeviceOrientationPortrait;
     }
-
+*/
 
     pView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
     lView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -70,12 +70,17 @@
     
     //[articlesView addSubview:articles.view];
     
+  
+    
+    /*
     [lView addSubview:categoryBar.view];
     [lView addSubview:_articles.view];
     
     [pView addSubview:categoryBar.view];
     [pView addSubview:_articles.view];
-    
+   */
+    [self.view addSubview:categoryBar.view];
+    [self.view addSubview:_articles.view];
    
     
     pView.autoresizesSubviews = YES;
@@ -96,13 +101,26 @@
 
 }
 
+-(BOOL) shouldAutorotate
+{
+    return YES;
+}
 
 
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation
+                                            duration:duration];
+    
+}
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
+    
+ 
+    /*
     
     //setup orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
@@ -126,7 +144,7 @@
         [self clearCurrentView];
         [self.view insertSubview:pView atIndex:0];
     }
-    
+    */
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -134,7 +152,7 @@
     [super viewWillDisappear:animated];
 }
 
-
+/*
 -(void)didRotate:(NSNotification *)notification
 {
     
@@ -175,7 +193,7 @@
         
     }
 }
-
+*/
 - (void) clearCurrentView
 {
     if (lView.superview)
@@ -188,7 +206,7 @@
     }
 }
 
-/*
+
 - (void)orientationChanged:(NSNotification *)notification
 
 {
@@ -214,8 +232,7 @@
 
     }
 
-} */
-
+}
 
 
 
@@ -232,10 +249,7 @@
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft;
 
 }
-- (BOOL)shouldAutorotate {
 
-    return YES;
-}
 
 
 

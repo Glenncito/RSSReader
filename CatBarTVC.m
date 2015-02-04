@@ -78,7 +78,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath*)indexPath
 {
     
-    return 70;
+    return 60;
 }
 
 //NICK: added method that fires when a tableview cell is tapped

@@ -32,7 +32,7 @@
         self.dateLabel.textColor = [UIColor grayColor];
         self.dateLabel.font = [UIFont fontWithName:@"Arial" size:8.0f];
         
-        self.headingTextView= [[UITextView alloc] initWithFrame:CGRectMake(80, 20, 400, 30)];
+        self.headingTextView= [[UITextView alloc] initWithFrame:CGRectMake(70, 20, 400, 30)];
         self.headingTextView.textColor = [UIColor blackColor];
         self.headingTextView.font = [UIFont fontWithName:@"Arial" size:10.0f];
         

@@ -37,7 +37,7 @@
 -(void)setFrame:(CGRect)frame {
     if (self.superview ) {
         float cellWidth = 30.0;
-        float cellHeight = 80.0;
+        float cellHeight = 300.0;
         
         frame.origin.x = (self.superview.frame.size.width - cellWidth)/2;
         frame.size.width = cellWidth;
