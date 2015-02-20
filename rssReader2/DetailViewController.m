@@ -36,7 +36,7 @@
     //[detailView setFrame:CGRectMake(0,0, 800,400)];
     
     [self.view addSubview:detailView];
-    detailView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+  //  detailView.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
 
   //  self.currentArticle.enclosure = [[UIImageView alloc] initWithFrame:CGRectMake(10,10,48,48)];
     //self.currentArticle.enclosure
@@ -48,7 +48,7 @@
         UIImage *image = [UIImage imageWithData:imgData];
         if (image) {
             self.enclosure.image = image;
-            self.enclosure.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+       //     self.enclosure.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
 
             }
         }
@@ -56,7 +56,7 @@
     self.headingLabel.textColor = [UIColor blackColor];
     self.headingLabel.font = [UIFont fontWithName:@"Arial" size:14.0f];
     self.headingLabel.text = self.currentArticle.title;
-    self.headingLabel.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
+  //  self.headingLabel.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin);
 
     
     
@@ -94,6 +94,28 @@
     
     [linkButton addTarget:self action:@selector(buttonPressed:) forControlEvents:UIControlEventTouchUpInside];
     
+    
+    NSDictionary *nameMap = @{@"enclosure" : self.enclosure,
+                              @"headingLabel" : self.headingLabel,
+                              @"dateLabel" : self.dateLabel,
+                              @"articleDescription" : self.articleDescription};
+    
+    //imageView is 0 pts from superview at left and right edges
+   /* NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[imageView]-0-|"
+                                                                             options:0
+                                                                             metrics:nil
+                                                                               views:nameMap];
+    
+    //imageview is 8 pots from dateLabel at its top edge...
+    //... and 8 pots from toolbar at its bottom edge
+    
+    NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat: @"V:[dateLabel]-[imageView]-[toolbar]"
+                                                                           options:0
+                                                                           metrics:nil
+                                                                             views:nameMap];
+    [self.view addConstraints: horizontalConstraints];
+    [self.view addConstraints: verticalConstraints];
+*/
 
 }
 
@@ -105,10 +127,11 @@
 
 
 
-- (BOOL)shouldAutorotate {
+/*- (BOOL)shouldAutorotate {
     
     return YES;
 }
+ */
 - (BOOL)navigationBar:(UINavigationBar *)navigationBar shouldPopItem:(UINavigationItem *)item
 {
     NSLog (@"item: %@", item);

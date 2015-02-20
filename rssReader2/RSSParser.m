@@ -12,6 +12,7 @@
 #import "ArticlesTVC.h"
 #import "CatBarTVC.h"
 #import "AppDelegate.h"
+#import <CoreData/CoreData.h>
 
 @implementation RSSParser
 

@@ -9,9 +9,14 @@
 #import <UIKit/UIKit.h>
 #import "ArticlesTVC.h"
 #import "DetailViewController.h"
+#import "CatBarTVC.h"
+//#import "AppDelegate.h"
+
+
 @interface ViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, NSXMLParserDelegate>{
    
-    
+    CatBarTVC *categoryBar;
+    ArticlesTVC *articlesList;
     
     UIView *pView;
     UIView *lView;
@@ -30,7 +35,10 @@
 @property (nonatomic, retain) UIView *lView;
 
 - (void)clearCurrentView;
-
+-(void) initUIElements;
 +(void)action;
 -(void) reloadTableView;
+
+//-(void) saveData:(id)sender;
+//-(void) findCategory:(id)sender;
 @end

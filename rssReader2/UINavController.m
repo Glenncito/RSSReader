@@ -27,21 +27,20 @@
 }
 
 #pragma -----handlder for orientation in UINAVcontroller----
--(NSUInteger)supportedInterfaceOrientations
+/*-(NSUInteger)supportedInterfaceOrientations
 {
     return [self.topViewController supportedInterfaceOrientations];
-}
-
+}*/
+/*
 -(BOOL)shouldAutorotate
 {
     return self.topViewController.shouldAutorotate;
-}
+}*/
 
--(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+/*-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return [self.topViewController shouldAutorotateToInterfaceOrientation:interfaceOrientation];
-}
-
+}*/
 
 /*
 #pragma mark - Navigation

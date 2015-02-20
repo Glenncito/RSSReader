@@ -14,6 +14,10 @@
 		243380731A6C1D960030CAAF /* rssReader2Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 243380721A6C1D960030CAAF /* rssReader2Tests.m */; };
 		243559A91A7AEDB00099F7C7 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 243559A81A7AEDB00099F7C7 /* DetailViewController.m */; };
 		243A4D851A758637003A43E3 /* RSSParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 243A4D841A758637003A43E3 /* RSSParser.m */; };
+		2440718C1A96071000D5FC72 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2440718B1A96071000D5FC72 /* CoreData.framework */; };
+		2440718F1A960AFE00D5FC72 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2440718D1A960AFE00D5FC72 /* Model.xcdatamodeld */; };
+		2445A90A1A9697C10041BD56 /* Articles.m in Sources */ = {isa = PBXBuildFile; fileRef = 2445A9091A9697C10041BD56 /* Articles.m */; };
+		2445A9131A96A0E40041BD56 /* RssCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = 2445A9121A96A0E40041BD56 /* RssCategory.m */; };
 		24A2E48A1A7645CB007A0F18 /* Article.m in Sources */ = {isa = PBXBuildFile; fileRef = 24A2E4891A7645CB007A0F18 /* Article.m */; };
 		24A2E48D1A764BA0007A0F18 /* ArticlesTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 24A2E48C1A764BA0007A0F18 /* ArticlesTableViewCell.m */; };
 		24EBD8761A6FD2E300E80D74 /* CatBarTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 24EBD8751A6FD2E300E80D74 /* CatBarTVC.m */; };
@@ -48,6 +52,12 @@
 		243559A81A7AEDB00099F7C7 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		243A4D831A758637003A43E3 /* RSSParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RSSParser.h; sourceTree = "<group>"; };
 		243A4D841A758637003A43E3 /* RSSParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RSSParser.m; sourceTree = "<group>"; };
+		2440718B1A96071000D5FC72 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		2440718E1A960AFE00D5FC72 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		2445A9081A9697C10041BD56 /* Articles.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Articles.h; sourceTree = "<group>"; };
+		2445A9091A9697C10041BD56 /* Articles.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Articles.m; sourceTree = "<group>"; };
+		2445A9111A96A0E40041BD56 /* RssCategory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RssCategory.h; sourceTree = "<group>"; };
+		2445A9121A96A0E40041BD56 /* RssCategory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RssCategory.m; sourceTree = "<group>"; };
 		24A2E4881A7645CB007A0F18 /* Article.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Article.h; sourceTree = "<group>"; };
 		24A2E4891A7645CB007A0F18 /* Article.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Article.m; sourceTree = "<group>"; };
 		24A2E48B1A764BA0007A0F18 /* ArticlesTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArticlesTableViewCell.h; sourceTree = "<group>"; };
@@ -69,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2440718C1A96071000D5FC72 /* CoreData.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,6 +96,7 @@
 		243380501A6C1D960030CAAF = {
 			isa = PBXGroup;
 			children = (
+				2440718B1A96071000D5FC72 /* CoreData.framework */,
 				2433805B1A6C1D960030CAAF /* rssReader2 */,
 				2433805A1A6C1D960030CAAF /* Products */,
 			);
@@ -126,6 +138,7 @@
 				24A2E48B1A764BA0007A0F18 /* ArticlesTableViewCell.h */,
 				24A2E48C1A764BA0007A0F18 /* ArticlesTableViewCell.m */,
 				2433806F1A6C1D960030CAAF /* rssReader2Tests */,
+				2445A9071A9696620041BD56 /* CoreDataFiles */,
 			);
 			path = rssReader2;
 			sourceTree = "<group>";
@@ -154,6 +167,18 @@
 				243380711A6C1D960030CAAF /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		2445A9071A9696620041BD56 /* CoreDataFiles */ = {
+			isa = PBXGroup;
+			children = (
+				2440718D1A960AFE00D5FC72 /* Model.xcdatamodeld */,
+				2445A9111A96A0E40041BD56 /* RssCategory.h */,
+				2445A9121A96A0E40041BD56 /* RssCategory.m */,
+				2445A9081A9697C10041BD56 /* Articles.h */,
+				2445A9091A9697C10041BD56 /* Articles.m */,
+			);
+			name = CoreDataFiles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,15 +282,18 @@
 			files = (
 				24A2E48A1A7645CB007A0F18 /* Article.m in Sources */,
 				24EBD8821A6FED5800E80D74 /* ViewController.m in Sources */,
+				2445A90A1A9697C10041BD56 /* Articles.m in Sources */,
 				24A2E48D1A764BA0007A0F18 /* ArticlesTableViewCell.m in Sources */,
 				24EBD8791A6FD38D00E80D74 /* ArticlesTVC.m in Sources */,
 				24EBD87C1A6FE4E100E80D74 /* CatTableViewCell.m in Sources */,
+				2445A9131A96A0E40041BD56 /* RssCategory.m in Sources */,
 				243559A91A7AEDB00099F7C7 /* DetailViewController.m in Sources */,
 				243A4D851A758637003A43E3 /* RSSParser.m in Sources */,
 				243380621A6C1D960030CAAF /* AppDelegate.m in Sources */,
 				2433805F1A6C1D960030CAAF /* main.m in Sources */,
 				24FED10F1A82522800503C26 /* UINavController.m in Sources */,
 				24EBD8761A6FD2E300E80D74 /* CatBarTVC.m in Sources */,
+				2440718F1A960AFE00D5FC72 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,6 +410,7 @@
 				INFOPLIST_FILE = rssReader2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -392,6 +421,7 @@
 				INFOPLIST_FILE = rssReader2/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -460,6 +490,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2440718D1A960AFE00D5FC72 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2440718E1A960AFE00D5FC72 /* Model.xcdatamodel */,
+			);
+			currentVersion = 2440718E1A960AFE00D5FC72 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 243380511A6C1D960030CAAF /* Project object */;
 }

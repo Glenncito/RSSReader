@@ -11,6 +11,8 @@
 #import "ArticlesTVC.h"
 #import "RSSParser.h"
 #import "DetailViewController.h"
+#import <CoreData/CoreData.h>
+//#import "AppDelegate.h"
 
 @interface ViewController ()
 
@@ -32,6 +34,9 @@
                                                  name:UIDeviceOrientationDidChangeNotification
                                                object:nil];
 
+    
+
+    
    /* //setup orientation
     [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate:) name:@"UIDeviceOrientationDidChangeNotification"  object:nil];
@@ -40,32 +45,31 @@
     {
         orientation = UIDeviceOrientationPortrait;
     }
-*/
 
-    pView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
-    lView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
+
+        lView = [[UIView alloc]initWithFrame:[[UIScreen mainScreen] bounds]];
 
     self.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     pView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     lView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     self.view.autoresizesSubviews = YES;
-
+*/
     [self setNeedsStatusBarAppearanceUpdate];
 
    // NC = [[UINavigationController alloc] initWithRootViewController:self];
-    UIView *categoryView = [[UIView alloc] init];
-    [categoryView setFrame:CGRectMake(60,0, 100,-200)];
+  //  UIView *categoryView = [[UIView alloc] init];
+    //[categoryView setFrame:CGRectMake(60,0, 100,-200)];
     
-    UIView *articlesView = [[UIView alloc] init];
-    [articlesView setFrame:CGRectMake(0,50, 400,400)];
+    //UIView *articlesView = [[UIView alloc] init];
+   // [articlesView setFrame:CGRectMake(0,50, 400,400)];
     
-    CatBarTVC *categoryBar = [[CatBarTVC alloc] initWithStyle:UITableViewStylePlain];
+    categoryBar = [[CatBarTVC alloc] initWithStyle:UITableViewStylePlain];
     categoryBar.view.transform = CGAffineTransformMakeRotation(-M_PI * 0.5);
     categoryBar.view.autoresizesSubviews=YES;
     
-    _articles = [[ArticlesTVC alloc] initWithStyle:UITableViewStylePlain];
+   
     
-    [articlesView addSubview:_articles.view];
+  //  [articlesView addSubview:_articles.view];
     //[self addChildViewController:articles];
     
     //[articlesView addSubview:articles.view];
@@ -78,29 +82,63 @@
     
     [pView addSubview:categoryBar.view];
     [pView addSubview:_articles.view];
+     
+     
+     pView.autoresizesSubviews = YES;
+     lView.autoresizesSubviews = YES;
    */
-    [self.view addSubview:categoryBar.view];
-    [self.view addSubview:_articles.view];
-   
     
-    pView.autoresizesSubviews = YES;
-    lView.autoresizesSubviews = YES;
+   [self.view addSubview:categoryBar.view];
+
+   
+ 
     
     [self addChildViewController:categoryBar];
-    [self addChildViewController:_articles];
     
     categoryBar.view.frame =CGRectMake(0,0, 500,70);
-    _articles.view.frame =CGRectMake(0,50, 400,400);
+   
+
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:@"kNotificationKey_reloadArticlesTable" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(switchToDetailView:) name:@"kNotificationKey_articleSelected" object:nil];
 
   //  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadTableView) name:@"kNotificationKey_loadDetailView" object:nil];
 
-
+   // NSDictionary *nameMap = @{@"categoryBar" : categoryBar,
+    //                          @"articlesList" : articlesList};
+    
+    //imageView is 0 pts from superview at left and right edges
+   /*  NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[articlesList]-0-|"
+     options:0
+     metrics:nil
+     views:nameMap];
+   */
+    /*
+     
+     //imageview is 8 pots from dateLabel at its top edge...
+     //... and 8 pots from toolbar at its bottom edge
+     
+     NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat: @"V:[dateLabel]-[imageView]-[toolbar]"
+     options:0
+     metrics:nil
+     views:nameMap];
+         [self.view addConstraints: verticalConstraints];
+     
+    [self.view addConstraints: horizontalConstraints];
+*/
 
 }
 
+-(void)initUIElements{
+    pView = [[UIView alloc]initWithFrame:CGRectMake(0,50, 768, 1024)];
+      [self.view addSubview:pView];
+     articlesList = [[ArticlesTVC alloc] initWithStyle:UITableViewStylePlain];
+    articlesList.view.frame =CGRectMake(0,50, 400,400);
+    [pView addSubview:articlesList.view];
+    [self addChildViewController:articlesList];
+    
+}
+/*
 -(BOOL) shouldAutorotate
 {
     return YES;
@@ -111,8 +149,9 @@
 {
     [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation
                                             duration:duration];
-    
+ 
 }
+*/
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -151,7 +190,56 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
 }
+/*
+-(void) saveData:(id)sender{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
 
+    NSManagedObject *newCategory;
+    
+    newCategory= [NSEntityDescription
+              insertNewObjectForEntityForName:@"Category"
+              inManagedObjectContext:context];
+    
+    [newCategory setValue:@"Top Stories" forKey:@"name"];
+    [newCategory setValue:@"http://feeds.news24.com/articles/news24/TopStories/rss" forKey:@"rssUrl"];
+    
+    NSError *error;
+    [context save:&error];
+    NSLog (@"category saved");
+    
+}
+
+-(void) retrieveCategory:(id)sender{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
+    
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"Category"
+                                                  inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc]init];
+    [request setEntity:entityDesc];
+    
+    NSPredicate *pred = [NSPredicate predicateWithFormat:@"(name = %@)",@"Top Stories"];
+    [request setPredicate:pred];
+    NSManagedObject *matches = nil;
+    
+    NSError *error;
+    NSArray *objects = [context executeFetchRequest:request
+                                              error:&error];
+    
+    if ([objects count]==0){
+        NSLog (@"no matches");
+    }else {
+        matches = objects[0];
+        NSLog (@"URL: %@",[matches valueForKey:@"rssUrl"]);
+        NSLog (@"%lu matches found", (unsigned long)[objects count]);
+
+    }
+    
+}
+ */
 /*
 -(void)didRotate:(NSNotification *)notification
 {
@@ -210,6 +298,7 @@
 - (void)orientationChanged:(NSNotification *)notification
 
 {
+    /*
     
     UIDeviceOrientation deviceOrientation = [UIDevice currentDevice].orientation;
     
@@ -230,7 +319,7 @@
         
         isShowingLandscapeView = NO;
 
-    }
+    }*/
 
 }
 
@@ -240,7 +329,7 @@
 
 
 
-
+/*
 
 - (NSUInteger)supportedInterfaceOrientations
 
@@ -251,7 +340,7 @@
 }
 
 
-
+*/
 
 
 
