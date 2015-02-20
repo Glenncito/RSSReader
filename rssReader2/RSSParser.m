@@ -14,6 +14,8 @@
 #import "AppDelegate.h"
 #import <CoreData/CoreData.h>
 
+#import "Articles.h"
+
 @implementation RSSParser
 
 @synthesize articles;
@@ -70,6 +72,7 @@
     //NICK: Some of your strings did not match the cateogoy strings exactly - this meant when I passed the string to this method it did pick up which URL to use.
    NSString *categoryURL;
     
+    
     if ([category isEqualToString:@"Top Stories"]){
         self.categoryURL = @"http://feeds.news24.com/articles/news24/TopStories/rss";
     }else if ([category isEqualToString:@"South Africa"]){
@@ -81,6 +84,9 @@
     }else if ([category isEqualToString:@"Business"]){
         self.categoryURL = @"http://feeds.news24.com/articles/fin24/news/rss";
     }
+    
+    //this will be send with the article data to the object model
+    categoryName = category;
     
     //NICK: Re-init array for the changes
     articles = [[NSMutableArray alloc]init];
@@ -145,7 +151,9 @@
     if ([self.currentElement isEqualToString:@"enclosure"]){
         article.enclosure = self.currentEnclosure;
         
-        [self.articles addObject:article];
+        //[self.articles addObject:article];
+        [self addArticleToObjectModel:article];
+        
         
         self.currentTitle = nil;
         self.currentDescription = nil;
@@ -157,6 +165,11 @@
     
     
     self.currentElement = nil;
+}
+-(void)addArticleToObjectModel:(Article *) articleObject{
+    NSLog (@"%@", articleObject.link);
+    
+    
 }
 
 -(void) parser: (NSXMLParser *) parser foundCharacters: (NSString *) string
@@ -219,7 +232,7 @@
     } else {
         NSLog(@"Error occurred during XML processing");
     }
-    
+    //call addArticleToObjectModel
 }
 
 
