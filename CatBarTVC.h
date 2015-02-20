@@ -10,11 +10,12 @@
 
 @interface CatBarTVC : UITableViewController {
 UITableView *tableView;
- NSArray *categories;
+ NSMutableArray *categories;
 }
 
 @property (nonatomic, retain)  UITableView *tableView;
-@property (nonatomic, retain)  NSArray *categories; //when is this neccessary?
+@property (nonatomic, retain)  NSMutableArray *categories; //when is this neccessary?
 
+-(void) retrieveCategories;
 @end
 

@@ -77,7 +77,7 @@
     }else if ([category isEqualToString:@"World"]){
         self.categoryURL = @"http://feeds.news24.com/articles/news24/World/rss";
     }else if ([category isEqualToString:@"Sport"]){
-        self.categoryURL = @"http://feeds.24.com/articles/sport/featured/topstories/rss";
+        self.categoryURL = @"http://feeds.24.com/articles/sport/featured/sport/rss";
     }else if ([category isEqualToString:@"Business"]){
         self.categoryURL = @"http://feeds.news24.com/articles/fin24/news/rss";
     }

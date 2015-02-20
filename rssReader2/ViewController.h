@@ -22,14 +22,14 @@
     UIView *lView;
     
     UIDeviceOrientation orientation;
-    UITableView *articles;
+    ArticlesTVC *articles;
     DetailViewController *dvc;
     UINavigationController *NC;
     BOOL isShowingLandscapeView;
 
 }
 
-@property (strong, nonatomic) ArticlesTVC *articles;
+//@property (strong, nonatomic) ArticlesTVC *articles;
 
 @property (nonatomic, retain) UIView *pView;
 @property (nonatomic, retain) UIView *lView;
@@ -38,6 +38,9 @@
 -(void) initUIElements;
 +(void)action;
 -(void) reloadTableView;
+
+-(void) initCoreCategoryEntity;
+- (BOOL)coreDataHasEntriesForEntityName:(NSString *)entityName;
 
 //-(void) saveData:(id)sender;
 //-(void) findCategory:(id)sender;

@@ -35,16 +35,16 @@
    // [self.window addSubview:self.navigationController.view];
    
     self.window.rootViewController=self.navigationController;
-    [self.viewController initUIElements];
+    
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
    
-    //---------store------------
+    /*---------store------------
  //   AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
     
     NSManagedObjectContext *context = [self managedObjectContext];
-    
-    RssCategory *category = [NSEntityDescription
+    RssCategory *category;
+    category = [NSEntityDescription
                           insertNewObjectForEntityForName:@"RssCategory"
                           inManagedObjectContext:context];
     
@@ -56,12 +56,25 @@
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
     }
     
-    //-------end store-------
+   category = [NSEntityDescription
+                             insertNewObjectForEntityForName:@"RssCategory"
+                             inManagedObjectContext:context];
+    
+    category.name = @"South Africa";
+    category.rssUrl = @"http://feeds.news24.com/articles/news24/SouthAfrica/rss";
+
+    
+    
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+    }
+    
+    /-------end store-------*/
     
     //------fetch-------------
     
     //NSManagedObjectContext *context = [self managedObjectContext];
-    
+    /*
     NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"RssCategory"
                                                   inManagedObjectContext:context];
     NSFetchRequest *request = [[NSFetchRequest alloc]init];
@@ -76,7 +89,7 @@
          NSLog(@"rssURL: %@", info.rssUrl);
     }
 
-    
+    */
     
     
     return YES;

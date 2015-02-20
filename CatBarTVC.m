@@ -12,6 +12,11 @@
 #import "ArticlesTVC.h"
 #import "ViewController.h"
 
+#import <CoreData/CoreData.h>
+#import "AppDelegate.h"
+
+#import "RssCategory.h"
+
 @interface CatBarTVC ()
 
 @end
@@ -22,7 +27,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    categories =[NSArray arrayWithObjects:@"Top Stories",@"South Africa",@"World",@"Sport",@"Business",nil];
+  //  categories =[NSArray arrayWithObjects:@"Top Stories",@"South Africa",@"World",@"Sport",@"Business",nil];
+    
+    
     _tableView = [[UITableView alloc] initWithFrame: CGRectMake(0,0, 0,0)
                                               style:UITableViewStylePlain];
     [_tableView setDataSource:self];
@@ -32,12 +39,33 @@
     _tableView.separatorColor = [UIColor greenColor];
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
     
-    
+    [self retrieveCategories];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
     
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+-(void) retrieveCategories{
+   
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+      NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    NSEntityDescription *entityDesc = [NSEntityDescription entityForName:@"RssCategory"
+                                                  inManagedObjectContext:context];
+    NSFetchRequest *request = [[NSFetchRequest alloc]init];
+    [request setEntity:entityDesc];
+    
+     NSError *error;
+    NSArray *fetchedObjects = [context executeFetchRequest:request
+                                                     error:&error];
+    categories = [[NSMutableArray alloc]init];
+    for (RssCategory *info in fetchedObjects) {
+        [categories addObject:info.name];
+        
+    }
+
 }
 
 - (void)didReceiveMemoryWarning {

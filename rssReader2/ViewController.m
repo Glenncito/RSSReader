@@ -12,7 +12,10 @@
 #import "RSSParser.h"
 #import "DetailViewController.h"
 #import <CoreData/CoreData.h>
-//#import "AppDelegate.h"
+#import "AppDelegate.h"
+
+#import "RssCategory.h"
+#import "Articles.h"
 
 @interface ViewController ()
 
@@ -62,7 +65,7 @@
     
     //UIView *articlesView = [[UIView alloc] init];
    // [articlesView setFrame:CGRectMake(0,50, 400,400)];
-    
+    [self initCoreCategoryEntity];
     categoryBar = [[CatBarTVC alloc] initWithStyle:UITableViewStylePlain];
     categoryBar.view.transform = CGAffineTransformMakeRotation(-M_PI * 0.5);
     categoryBar.view.autoresizesSubviews=YES;
@@ -90,7 +93,10 @@
     
    [self.view addSubview:categoryBar.view];
 
-   
+    
+    
+    [self initUIElements];
+    
  
     
     [self addChildViewController:categoryBar];
@@ -190,6 +196,108 @@
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
 }
+
+-(void) initCoreCategoryEntity{
+    if([self coreDataHasEntriesForEntityName:@"RssCategory"]==NO){
+     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    RssCategory *category;
+   
+    //--Top Stories--//
+    category = [NSEntityDescription
+                insertNewObjectForEntityForName:@"RssCategory"
+                inManagedObjectContext:context];
+    
+    category.name = @"Top Stories";
+    category.rssUrl = @"http://feeds.news24.com/articles/news24/TopStories/rss";
+    
+    NSError *error;
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+    }
+    
+    //--South Africa--//
+    category = [NSEntityDescription
+                insertNewObjectForEntityForName:@"RssCategory"
+                inManagedObjectContext:context];
+    
+    category.name = @"South Africa";
+    category.rssUrl = @"http://feeds.news24.com/articles/news24/SouthAfrica/rss";
+    
+    
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+    }
+    
+    //--World--//
+    category = [NSEntityDescription
+                insertNewObjectForEntityForName:@"RssCategory"
+                inManagedObjectContext:context];
+    
+    category.name = @"South Africa";
+    category.rssUrl = @"http://feeds.news24.com/articles/news24/World/rss";
+    
+    
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+    }
+
+    //--Sport--//
+    category = [NSEntityDescription
+                insertNewObjectForEntityForName:@"RssCategory"
+                inManagedObjectContext:context];
+    
+    category.name = @"Sport";
+    category.rssUrl = @"http://feeds.24.com/articles/sport/featured/sport/rss";
+    
+    
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+    }
+
+    
+    //--Business--//
+    category = [NSEntityDescription
+                insertNewObjectForEntityForName:@"RssCategory"
+                inManagedObjectContext:context];
+    
+    category.name = @"Business";
+    category.rssUrl = @"http://feeds.news24.com/articles/fin24/news/rss";
+    
+    
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+    }
+    }else{
+        NSLog(@"Has entries");
+    }
+    
+
+}
+
+- (BOOL)coreDataHasEntriesForEntityName:(NSString *)entityName {
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+        NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:entityName
+                                              inManagedObjectContext:context];
+    [request setEntity:entity];
+    [request setFetchLimit:1];
+    NSError *error;
+    NSArray *results = [context executeFetchRequest:request error:&error];
+    if (!results) {
+        NSLog(@"Fetch error: %@", error);
+        abort();
+    }
+    if ([results count] == 0) {
+        return NO;
+    }
+    return YES;
+}
+
+
 /*
 -(void) saveData:(id)sender{
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -360,7 +468,7 @@
 }
 
 -(void) reloadTableView{
-    [_articles.tableView reloadSections:[NSIndexSet indexSetWithIndex:0]withRowAnimation:UITableViewRowAnimationAutomatic];
+    [articlesList.tableView reloadSections:[NSIndexSet indexSetWithIndex:0]withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 /*
 #pragma mark - Navigation
