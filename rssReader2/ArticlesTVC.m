@@ -35,8 +35,6 @@
     
     parser = [RSSParser sharedRSSParser];
     
-    NSLog (@"items: %lu",(unsigned long)parser.articles.count);
-    
     self.articleList = [[NSMutableArray alloc]initWithArray:parser.articles];
  //  [self performSelectorOnMainThread:@selector(updateTable) withObject:nil waitUntilDone:NO];
     

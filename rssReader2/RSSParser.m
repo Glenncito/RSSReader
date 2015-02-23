@@ -152,8 +152,9 @@
         article.enclosure = self.currentEnclosure;
         
         //[self.articles addObject:article];
+        if([self recordAlreadyExists:article]){
         [self addArticleToObjectModel:article];
-        
+        }
         
         self.currentTitle = nil;
         self.currentDescription = nil;
@@ -167,9 +168,81 @@
     self.currentElement = nil;
 }
 -(void)addArticleToObjectModel:(Article *) articleObject{
-    NSLog (@"%@", articleObject.link);
+     
+     //put object in model
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    Articles *articleEntity;
+    
+    articleEntity = [NSEntityDescription
+                insertNewObjectForEntityForName:@"Articles"
+                inManagedObjectContext:context];
+    
+    articleEntity.articleDescription = articleObject.description;
+    articleEntity.categoryName = categoryName;
+    articleEntity.enclosure= articleObject.enclosure;
+    articleEntity.link= articleObject.link;
+    articleEntity.pubDate= articleObject.pubDate;
+    articleEntity.title= articleObject.title;
     
     
+    NSError *error;
+    if (![context save:&error]) {
+        NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
+    }
+
+    
+     
+     
+}
+
+-(BOOL)recordAlreadyExists:(Article *)articleObject{
+    
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Articles"
+                                              inManagedObjectContext:context];
+    [request setEntity:entity];
+    NSError *error;
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&error];
+    if (!fetchedObjects) {
+        NSLog(@"Fetch error: %@", error);
+        abort();
+    }
+    for (Articles *info in fetchedObjects) {
+        if([articleObject.link isEqualToString:info.link]){
+            return YES;
+        }else
+            return NO;
+        
+    }
+    return NO;
+}
+-(void) buildArticleList{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Articles"
+                                              inManagedObjectContext:context];
+    NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"categoryName = %@", categoryName];
+    request.predicate = predicate;
+
+    [request setEntity:entity];
+    [request setFetchLimit:20];
+    
+    NSError *error;
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&error];
+    
+    for (Articles *info in fetchedObjects) {
+        NSLog (@"article name: %@", info.title);
+        [articles addObject:info];
+    }
+
+
 }
 
 -(void) parser: (NSXMLParser *) parser foundCharacters: (NSString *) string
@@ -232,7 +305,8 @@
     } else {
         NSLog(@"Error occurred during XML processing");
     }
-    //call addArticleToObjectModel
+    [self buildArticleList];
+    
 }
 
 

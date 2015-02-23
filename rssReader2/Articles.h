@@ -13,7 +13,7 @@
 @interface Articles : NSManagedObject
 
 @property (nonatomic, retain) NSString * articleDescription;
-@property (nonatomic, retain) NSNumber * categoryName;
+@property (nonatomic, retain) NSString * categoryName;
 @property (nonatomic, retain) NSString * enclosure;
 @property (nonatomic, retain) NSString * link;
 @property (nonatomic, retain) NSString * pubDate;
