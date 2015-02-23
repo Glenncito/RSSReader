@@ -152,7 +152,7 @@
         article.enclosure = self.currentEnclosure;
         
         //[self.articles addObject:article];
-        if([self recordAlreadyExists:article]){
+        if([self recordAlreadyExists:article]==NO){
         [self addArticleToObjectModel:article];
         }
         
@@ -239,7 +239,7 @@
     
     for (Articles *info in fetchedObjects) {
         NSLog (@"article name: %@", info.title);
-        [articles addObject:info];
+        [self.articles addObject:info];
     }
 
 

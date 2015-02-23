@@ -33,7 +33,7 @@
 
 @property (nonatomic, retain) NSMutableArray *articles;
 -(BOOL)recordAlreadyExists:(Article *)articleObject;
--(void) buildArticleList
+-(void) buildArticleList;
 
 //NICK: Make the method "public" ie. accessible from outside classes
 //GLENN: So do you mean turning it into a class method?
