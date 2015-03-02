@@ -18,7 +18,7 @@
     Article *article;
     NSMutableArray *articles;
     BOOL errorParsing;
-    NSString *categoryName;
+    
 }
 + (RSSParser *)sharedRSSParser;
 
@@ -31,6 +31,7 @@
 @property (nonatomic, strong) NSString *currentPubDate;
 @property (nonatomic, strong) NSString *currentEnclosure;
 
+@property (nonatomic, weak) NSString *categoryName;
 @property (nonatomic, retain) NSMutableArray *articles;
 -(BOOL)recordAlreadyExists:(Article *)articleObject;
 -(void) buildArticleList;

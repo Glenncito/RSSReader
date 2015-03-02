@@ -235,7 +235,7 @@
                 insertNewObjectForEntityForName:@"RssCategory"
                 inManagedObjectContext:context];
     
-    category.name = @"South Africa";
+    category.name = @"World";
     category.rssUrl = @"http://feeds.news24.com/articles/news24/World/rss";
     
     
@@ -248,8 +248,8 @@
                 insertNewObjectForEntityForName:@"RssCategory"
                 inManagedObjectContext:context];
     
-    category.name = @"Sport";
-    category.rssUrl = @"http://feeds.24.com/articles/sport/featured/sport/rss";
+    category.name = @"Tech";
+    category.rssUrl = @"http://feeds.news24.com/articles/fin24/tech/rss";
     
     
     if (![context save:&error]) {

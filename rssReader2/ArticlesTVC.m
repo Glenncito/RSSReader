@@ -12,6 +12,9 @@
 #import "article.h"
 #import "DetailViewController.h"
 
+#import "AppDelegate.h"
+#import <CoreData/CoreData.h>
+#import "Articles.h"
 
 
 @interface ArticlesTVC ()
@@ -31,6 +34,10 @@
                                                     style:UITableViewStylePlain];
     [myTableView setDataSource:self];
     [myTableView setDelegate:self];
+    
+    //fetch from core data here for offline capabilities
+    // then parse
+    //then update from core using fetched results controller
     
     
     parser = [RSSParser sharedRSSParser];
@@ -63,20 +70,42 @@
 //NICK: Method that gets fired when a category is received
 - (void) categorySelected:(NSNotification *)notification {
        //Get our category string out of our notification object
-    NSString *categoryString = notification.object;
+    NSString *categoryName = notification.object;
     
     //Reload the parser using your method
-    [parser reloadParser:categoryString];
+    [parser reloadParser:categoryName];
     dispatch_async(dispatch_get_main_queue(), ^{
         [myTableView reloadData];
     });
 
-    
+    [self listArticles:categoryName];
     
     
 }
 
-
+-(void)listArticles:(NSString *)categoryName{
+    AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:@"Articles"
+                                              inManagedObjectContext:context];
+    NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"categoryName = %@", categoryName];
+    request.predicate = predicate;
+    
+    [request setEntity:entity];
+    [request setFetchLimit:20];
+    
+    NSError *error;
+    NSArray *fetchedObjects = [context executeFetchRequest:request error:&error];
+    NSLog(@"*************************");
+    for (Articles *info in fetchedObjects) {
+      NSLog (@"--------\narticle name: %@\narticleCategory: %@", info.title,info.categoryName);
+        [parser.articles addObject:info];
+    }
+    NSLog(@"*************************");
+    [self parsingComplete];
+}
 
 
 // Method that gets fired when parsing is complete via NSNotification

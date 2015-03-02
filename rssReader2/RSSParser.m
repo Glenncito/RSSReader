@@ -39,6 +39,7 @@
         if (!self.categoryURL){
             NSString *string = @"http://feeds.news24.com/articles/news24/TopStories/rss";
             self.categoryURL = string;
+            self.categoryName = @"Top Stories";
         }
         rssURL = [[NSURL alloc]initWithString:self.categoryURL];
         parser = [[NSXMLParser alloc] initWithContentsOfURL:rssURL];
@@ -79,14 +80,14 @@
     self.categoryURL = @"http://feeds.news24.com/articles/news24/SouthAfrica/rss";
     }else if ([category isEqualToString:@"World"]){
         self.categoryURL = @"http://feeds.news24.com/articles/news24/World/rss";
-    }else if ([category isEqualToString:@"Sport"]){
-        self.categoryURL = @"http://feeds.24.com/articles/sport/featured/sport/rss";
+    }else if ([category isEqualToString:@"Tech"]){
+        self.categoryURL = @"http://feeds.news24.com/articles/fin24/tech/rss";
     }else if ([category isEqualToString:@"Business"]){
         self.categoryURL = @"http://feeds.news24.com/articles/fin24/news/rss";
     }
     
     //this will be send with the article data to the object model
-    categoryName = category;
+    self.categoryName = category;
     
     //NICK: Re-init array for the changes
     articles = [[NSMutableArray alloc]init];
@@ -154,6 +155,8 @@
         //[self.articles addObject:article];
         if([self recordAlreadyExists:article]==NO){
         [self addArticleToObjectModel:article];
+        }else {
+            NSLog (@"\n---\n'%@' was not added to the database",article.title);
         }
         
         self.currentTitle = nil;
@@ -167,6 +170,8 @@
     
     self.currentElement = nil;
 }
+#pragma mark ------Core Data interaction------
+
 -(void)addArticleToObjectModel:(Article *) articleObject{
      
      //put object in model
@@ -180,7 +185,7 @@
                 inManagedObjectContext:context];
     
     articleEntity.articleDescription = articleObject.description;
-    articleEntity.categoryName = categoryName;
+    articleEntity.categoryName = self.categoryName;
     articleEntity.enclosure= articleObject.enclosure;
     articleEntity.link= articleObject.link;
     articleEntity.pubDate= articleObject.pubDate;
@@ -190,12 +195,15 @@
     NSError *error;
     if (![context save:&error]) {
         NSLog(@"Whoops, couldn't save: %@", [error localizedDescription]);
-    }
+    }else
+        NSLog(@"\n---\n'%@' has been added to the db",articleEntity.title);
 
     
      
      
 }
+
+
 
 -(BOOL)recordAlreadyExists:(Article *)articleObject{
     
@@ -205,6 +213,10 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Articles"
                                               inManagedObjectContext:context];
+  
+    NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"categoryName = %@", self.categoryName];
+    request.predicate = predicate;
+    
     [request setEntity:entity];
     NSError *error;
     NSArray *fetchedObjects = [context executeFetchRequest:request error:&error];
@@ -212,14 +224,22 @@
         NSLog(@"Fetch error: %@", error);
         abort();
     }
+    
+    BOOL exists = NO;
+
     for (Articles *info in fetchedObjects) {
         if([articleObject.link isEqualToString:info.link]){
-            return YES;
-        }else
-            return NO;
-        
+            NSLog (@"\n--\n'%@' exists\n",info.title);
+            exists = YES;
+
+        }
     }
-    return NO;
+    if (exists==YES){
+        return YES;
+    }else{
+        return NO;
+    }
+    return 0;
 }
 -(void) buildArticleList{
     AppDelegate *appDelegate = [[UIApplication sharedApplication] delegate];
@@ -228,7 +248,7 @@
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     NSEntityDescription *entity = [NSEntityDescription entityForName:@"Articles"
                                               inManagedObjectContext:context];
-    NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"categoryName = %@", categoryName];
+    NSPredicate *predicate  = [NSPredicate predicateWithFormat:@"categoryName = %@", self.categoryName];
     request.predicate = predicate;
 
     [request setEntity:entity];
@@ -238,7 +258,7 @@
     NSArray *fetchedObjects = [context executeFetchRequest:request error:&error];
     
     for (Articles *info in fetchedObjects) {
-        NSLog (@"article name: %@", info.title);
+      //  NSLog (@"article name: %@", info.title);
         [self.articles addObject:info];
     }
 
@@ -300,12 +320,11 @@
     if (errorParsing == NO)
     {
         NSLog(@"XML processing done!");
-        //NICK: Here we will broadcast a message to say that loading is done and our tableview can reload it's data
         [[NSNotificationCenter defaultCenter] postNotificationName:@"kNotificationKey_XMLProcessingDone" object:nil];
     } else {
         NSLog(@"Error occurred during XML processing");
     }
-    [self buildArticleList];
+   [self buildArticleList];
     
 }
 

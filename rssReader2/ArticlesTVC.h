@@ -12,10 +12,13 @@
 @interface ArticlesTVC: UITableViewController{
     RSSParser *parser;
     UITableView *myTableView;
+    
+//    NSFetchedResultsController
 }
 
 //@property (nonatomic, strong) UITableView *myTableView;
 @property (nonatomic, strong)  NSMutableArray *articleList;
 //@property (nonatomic, strong) RSSParser *parser;
 -(ArticlesTVC *) initTable;
+-(void)listArticles:(NSString *) categoryName;
 @end
